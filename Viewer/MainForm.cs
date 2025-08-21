@@ -7,19 +7,16 @@ namespace Viewer
 {
 	public partial class MainForm : Form
 	{
-		readonly private SettingsHelper settings;
-		private Tuple<bool, FormWindowState> windowState;
+		readonly private RegistryKey key;
 
 		public MainForm(SettingsHelper settings)
 		{
-			this.settings = settings;
+			key = settings.GetUserRegistryKey();
 			InitializeComponent();
 		}
 
-		private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+		private void mainForm_FormClosed(object sender, FormClosedEventArgs e)
 		{
-			RegistryKey key = settings.GetUserRegistryKey();
-
 			try // write settings value
 			{
 				if (WindowState != FormWindowState.Minimized)
@@ -42,10 +39,8 @@ namespace Viewer
 			}
 		}
 
-		private void MainForm_ResizeEnd(object sender, EventArgs e)
+		private void mainForm_ResizeEnd(object sender, EventArgs e)
 		{
-			RegistryKey key = settings.GetUserRegistryKey();
-
 			try // write settings value (size & position changed)
 			{
 				key.SetValue(nameof(Height), Height, RegistryValueKind.DWord);
@@ -62,17 +57,16 @@ namespace Viewer
 
 		protected override void WndProc(ref Message m)
 		{
-			FormWindowState org = WindowState;
+			FormWindowState previousState = WindowState;
 			base.WndProc(ref m);
-			if (WindowState != org)
-				OnFormWindowStateChanged(EventArgs.Empty);
+			if (WindowState != previousState)
+				OnFormWindowStateChanged();
 		}
 
-		protected virtual void OnFormWindowStateChanged(EventArgs e)
+		protected virtual void OnFormWindowStateChanged()
 		{
 			if (WindowState != FormWindowState.Minimized)
 			{
-				RegistryKey key = settings.GetUserRegistryKey();
 				key.SetValue(nameof(WindowState), (int)WindowState, RegistryValueKind.DWord);
 			}
 		}

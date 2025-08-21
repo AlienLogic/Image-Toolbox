@@ -34,11 +34,12 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+			this.ClientSize = new System.Drawing.Size(284, 261);
 			this.Name = "MainForm";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.Text = "Photo Viewer";
-			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
-			this.ResizeEnd += new System.EventHandler(this.MainForm_ResizeEnd);
+			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.mainForm_FormClosed);
+			this.ResizeEnd += new System.EventHandler(this.mainForm_ResizeEnd);
 			this.ResumeLayout(false);
 
 		}
